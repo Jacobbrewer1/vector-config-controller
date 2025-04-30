@@ -12,6 +12,9 @@ type Test mg.Namespace
 
 // Unit runs unit tests for the repository.
 func (Test) Unit() error {
+	mg.Deps(Init)
+	fmt.Println("[INFO] Running unit tests")
+
 	args := []string{
 		"test",
 		"--platforms", "@io_bazel_rules_go//go/toolchain:linux_amd64",
@@ -32,10 +35,12 @@ type Coverage mg.Namespace
 
 // Run runs unit tests for the repository with code coverage enabled.
 func (Coverage) Run() error {
+	mg.Deps(Init)
+	fmt.Println("[INFO] Running unit tests with coverage")
+
 	args := []string{"coverage",
 		"--platforms", "@io_bazel_rules_go//go/toolchain:linux_" + hostArch(),
 		"--build_tag_filters=-oci",
-		"--test_tag_filters=-integration,-e2e",
 		"//...",
 	}
 

@@ -25,6 +25,20 @@ func (Dep) Get(dep string) error {
 	return VendorDeps()
 }
 
+// Install installs a golang dependency via go install.
+func (Dep) Install(dep string) error {
+	err := sh.Run(
+		"go",
+		"install",
+		dep,
+	)
+	if err != nil {
+		return fmt.Errorf("error installing dependency: %w", err)
+	}
+
+	return VendorDeps()
+}
+
 // VendorDeps manages vendoring of Golang dependencies.
 func VendorDeps() error {
 	if err := sh.Run("go", "mod", "tidy"); err != nil {

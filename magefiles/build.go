@@ -12,6 +12,7 @@ type Build mg.Namespace
 
 // All builds all applications
 func (b Build) All() error {
+	mg.Deps(Init)
 	fmt.Println("[INFO] Building all code")
 
 	start := time.Now()
@@ -32,6 +33,7 @@ func (b Build) All() error {
 
 // One builds a single application
 func (b Build) One(service string) error {
+	mg.Deps(Init)
 	fmt.Printf("[INFO] Building %s\n", service)
 
 	start := time.Now()
