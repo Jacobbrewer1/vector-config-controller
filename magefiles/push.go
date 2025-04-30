@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -63,7 +64,7 @@ var commitTag = sync.OnceValue(func() string {
 var shouldPush = sync.OnceValue(func() bool {
 	overrideStr := os.Getenv("PUSH_IMAGES")
 	if overrideStr != "" {
-		fmt.Println("[DEBUG] Overriding push images with", overrideStr)
+		log(slog.LevelDebug, "Overriding push images with "+overrideStr)
 		overrideVal, _ := strconv.ParseBool(overrideStr)
 		return overrideVal
 	}
@@ -136,7 +137,7 @@ func pushImages(targets []string, tag string) error {
 		go func(target string) {
 			defer wg.Done()
 
-			fmt.Println("[INFO] Pushing image", target)
+			log(slog.LevelDebug, "Pushing image "+target)
 			if err := pushImage(ctx, "cmd/"+target, tag); err != nil {
 				errChan <- fmt.Errorf("pushing image %s: %w", target, err)
 			}
@@ -148,13 +149,13 @@ func pushImages(targets []string, tag string) error {
 		close(errChan)
 	}()
 
-	fmt.Println("[INFO] Watching error channel for push jobs")
+	log(slog.LevelDebug, "Watching push errors channel")
 	errs := make([]error, 0, len(targets))
 	for err := range errChan {
 		errs = append(errs, err)
 	}
 
-	fmt.Println("[INFO] Waiting for all push jobs to finish")
+	log(slog.LevelDebug, "Waiting for all push jobs to finish")
 	wg.Wait()
 
 	return errors.Join(errs...)
@@ -181,7 +182,7 @@ func pushImage(ctx context.Context, target, tag string) error {
 		// Prevent blocking
 	}
 
-	fmt.Println("[INFO] Tagging images with ", tag)
+	log(slog.LevelDebug, "Tagging images with "+tag)
 
 	// Tag the image
 	if err := sh.Run(
@@ -204,7 +205,7 @@ func pushImage(ctx context.Context, target, tag string) error {
 	}
 
 	if !shouldPush() {
-		fmt.Println("[INFO] Skipping push to container registry")
+		log(slog.LevelInfo, "Skipping push of image "+target)
 		return nil
 	}
 

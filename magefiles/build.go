@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/magefile/mage/mg"
@@ -15,7 +16,7 @@ type Build mg.Namespace
 // All builds all applications
 func (b Build) All() error {
 	mg.Deps(Init)
-	fmt.Println("[INFO] Building all code")
+	log(slog.LevelInfo, "Building all code")
 
 	start := time.Now()
 
@@ -29,14 +30,14 @@ func (b Build) All() error {
 		return fmt.Errorf("error building all code: %w", err)
 	}
 
-	fmt.Printf("[INFO] Build completed in %s\n", time.Since(start))
+	log(slog.LevelInfo, fmt.Sprintf("Build completed in %s", time.Since(start)))
 	return nil
 }
 
 // One builds a single application
 func (b Build) One(service string) error {
 	mg.Deps(Init)
-	fmt.Printf("[INFO] Building %s\n", service)
+	log(slog.LevelInfo, fmt.Sprintf("Building %s", service))
 
 	start := time.Now()
 
@@ -50,6 +51,6 @@ func (b Build) One(service string) error {
 		return fmt.Errorf("error building %s: %w", service, err)
 	}
 
-	fmt.Printf("[INFO] Build completed in %s\n", time.Since(start))
+	log(slog.LevelInfo, fmt.Sprintf("Build of %s completed in %s", service, time.Since(start)))
 	return nil
 }
