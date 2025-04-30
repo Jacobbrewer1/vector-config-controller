@@ -68,7 +68,7 @@ func reconcile(
 		kubeClient,
 		&corev1.ConfigMap{
 			ObjectMeta: metav1.ObjectMeta{
-				Name:      "vector-logs-config",
+				Name:      "vector-agent-config",
 				Namespace: "vector",
 				Labels: map[string]string{
 					"owner": appName,
