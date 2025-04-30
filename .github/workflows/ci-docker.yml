@@ -55,6 +55,7 @@ jobs:
         with:
           path: "~/.cache/bazel"
           key: bazel-docker-build
+          save-always: true
 
       - name: Build Mage command
         run: |
