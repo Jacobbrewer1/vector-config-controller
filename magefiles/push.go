@@ -11,8 +11,6 @@ import (
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
-
-	"github.com/jacobbrewer1/web/version"
 )
 
 var containerRegistry = sync.OnceValue(func() string {
@@ -36,6 +34,26 @@ var containerRegistry = sync.OnceValue(func() string {
 	return fmt.Sprintf("ghcr.io/%s", repoPath)
 })
 
+var commitTag = sync.OnceValue(func() string {
+	got, err := sh.Output("git", "describe", "--tags", "--abbrev=0")
+	if err == nil && got != "" {
+		return strings.TrimSpace(got)
+	}
+
+	got, err = sh.Output("git", "describe", "--tags")
+	if err == nil && got != "" {
+		return strings.TrimSpace(got)
+	}
+
+	// Fallback to the commit hash if no tags are found
+	got, err = sh.Output("git", "rev-parse", "--short", "HEAD")
+	if err == nil && got != "" {
+		return strings.TrimSpace(got)
+	}
+
+	panic("could not determine git tag")
+})
+
 type Push mg.Namespace
 
 func (Push) All() error {
@@ -55,7 +73,7 @@ func (Push) All() error {
 		}
 	}
 
-	if err := pushImages(serviceTargets, version.GitCommit()); err != nil {
+	if err := pushImages(serviceTargets, commitTag()); err != nil {
 		return fmt.Errorf("pushing images: %w", err)
 	}
 
@@ -107,6 +125,8 @@ func pushImage(ctx context.Context, target string, tag string) error {
 	); err != nil {
 		return fmt.Errorf("loading tarball %s to image: %w", tarballPath, err)
 	}
+
+	target = strings.TrimPrefix(target, "cmd/")
 
 	// Is the context cancelled?
 	select {
