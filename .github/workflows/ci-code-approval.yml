@@ -60,7 +60,7 @@ jobs:
       - name: Restore bazel cache
         uses: actions/cache/restore@v4
         with:
-          key: bazel-code-approval
+          key: bazel
           path: |
             ~/.cache/bazel
 
@@ -74,7 +74,7 @@ jobs:
         uses: actions/cache/save@v4
         if: always()
         with:
-          key: bazel-code-approval
+          key: bazel
           path: |
             ~/.cache/bazel
 
@@ -94,7 +94,7 @@ jobs:
       - name: Restore bazel cache
         uses: actions/cache/restore@v4
         with:
-          key: bazel-code-approval-diff
+          key: bazel
           path: |
             ~/.cache/bazel
 
@@ -113,11 +113,3 @@ jobs:
             echo "Make sure to run 'mage fixit' before committing."
             exit 1
           fi
-
-      - name: Save bazel cache
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          key: bazel-code-approval-diff
-          path: |
-            ~/.cache/bazel
