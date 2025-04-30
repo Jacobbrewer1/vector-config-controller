@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"sync"
@@ -53,6 +52,6 @@ var hostArch = sync.OnceValue(func() string {
 	case "x86_64":
 		return "amd64"
 	default:
-		panic(fmt.Sprintf("unsupported host arch: %s", out))
+		panic("unsupported host arch: " + out)
 	}
 })

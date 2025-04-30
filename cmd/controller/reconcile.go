@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -36,7 +37,7 @@ func (a *App) Reconcile(ctx context.Context) error {
 				ctx,
 				a.base.KubeClient(),
 			); err != nil {
-				l.Error("error reconciling", logging.KeyError, err)
+				l.Error("error reconciling", slog.String(logging.KeyError, err.Error()))
 			}
 		case <-ctx.Done():
 			l.Info("reconciler closing")

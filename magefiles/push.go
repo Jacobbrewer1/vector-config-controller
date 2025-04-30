@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
+// containerRegistry returns the container registry to use for pushing images.
 var containerRegistry = sync.OnceValue(func() string {
 	// Check if there's an override registry set in the environment
 	overrideRegistry := os.Getenv("CONTAINER_REGISTRY")
@@ -31,9 +33,10 @@ var containerRegistry = sync.OnceValue(func() string {
 	// repo path current format is "owner/repo"
 
 	// Append the GitHub container registry URL
-	return fmt.Sprintf("ghcr.io/%s", repoPath)
+	return "ghcr.io/" + repoPath
 })
 
+// commitTag returns the latest git tag or commit hash if no tags are found.
 var commitTag = sync.OnceValue(func() string {
 	got, err := sh.Output("git", "describe", "--tags", "--abbrev=0")
 	if err == nil && got != "" {
@@ -54,8 +57,21 @@ var commitTag = sync.OnceValue(func() string {
 	panic("could not determine git tag")
 })
 
+// shouldPush determines if the image should be pushed to the container registry.
+var shouldPush = sync.OnceValue(func() bool {
+	overrideStr := os.Getenv("PUSH_IMAGES")
+	if overrideStr != "" {
+		fmt.Println("[DEBUG] Overriding push images with", overrideStr)
+		overrideVal, _ := strconv.ParseBool(overrideStr)
+		return overrideVal
+	}
+
+	return isCIRunner()
+})
+
 type Push mg.Namespace
 
+// All builds and pushes all container targets to the target environment container registry.
 func (Push) All() error {
 	mg.Deps(Build.All)
 
@@ -80,6 +96,32 @@ func (Push) All() error {
 	return nil
 }
 
+// One builds and pushes the specified container target to the target environment container registry.
+func (Push) One(target string) error {
+	mg.Deps(mg.F(Build.One, target))
+
+	// Grab all the targets from the cmd directory
+	targets, err := os.ReadDir("cmd")
+	if err != nil {
+		return fmt.Errorf("reading cmd directory: %w", err)
+	}
+
+	// Filter out the directories that are not services
+	serviceTargets := make([]string, 0, len(targets))
+	for _, target := range targets {
+		if target.IsDir() {
+			serviceTargets = append(serviceTargets, target.Name())
+		}
+	}
+
+	if err := pushImages(serviceTargets, commitTag()); err != nil {
+		return fmt.Errorf("pushing images: %w", err)
+	}
+
+	return nil
+}
+
+// pushImages pushes the specified images to the target environment container registry.
 func pushImages(targets []string, tag string) error {
 	errChan := make(chan error, 1)
 	wg := new(sync.WaitGroup)
@@ -116,7 +158,8 @@ func pushImages(targets []string, tag string) error {
 	return errors.Join(errs...)
 }
 
-func pushImage(ctx context.Context, target string, tag string) error {
+// pushImage pushes the specified image to the target environment container registry.
+func pushImage(ctx context.Context, target, tag string) error {
 	tarballPath := filepath.Join(binDirectory(), target, "oci.tar", "tarball.tar")
 	if err := sh.Run(
 		"docker",
@@ -156,6 +199,11 @@ func pushImage(ctx context.Context, target string, tag string) error {
 		fmt.Sprintf("%s/%s:latest", containerRegistry(), target),
 	); err != nil {
 		return fmt.Errorf("tagging image %s with latest tag: %w", target, err)
+	}
+
+	if !shouldPush() {
+		fmt.Println("[INFO] Skipping push to container registry")
+		return nil
 	}
 
 	// Push the image

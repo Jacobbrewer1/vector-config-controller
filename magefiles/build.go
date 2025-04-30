@@ -18,12 +18,32 @@ func (b Build) All() error {
 
 	args := []string{
 		"build",
-		"--platforms", fmt.Sprintf("@io_bazel_rules_go//go/toolchain:linux_%s", hostArch()),
+		"--platforms", "@io_bazel_rules_go//go/toolchain:linux_" + hostArch(),
 		"//...",
 	}
 
 	if err := sh.Run("bazel", args...); err != nil {
 		return fmt.Errorf("error building all code: %w", err)
+	}
+
+	fmt.Printf("[INFO] Build completed in %s\n", time.Since(start))
+	return nil
+}
+
+// One builds a single application
+func (b Build) One(service string) error {
+	fmt.Printf("[INFO] Building %s\n", service)
+
+	start := time.Now()
+
+	args := []string{
+		"build",
+		"--platforms", "@io_bazel_rules_go//go/toolchain:linux_" + hostArch(),
+		"//cmd/" + service,
+	}
+
+	if err := sh.Run("bazel", args...); err != nil {
+		return fmt.Errorf("error building %s: %w", service, err)
 	}
 
 	fmt.Printf("[INFO] Build completed in %s\n", time.Since(start))
