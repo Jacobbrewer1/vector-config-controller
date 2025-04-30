@@ -17,7 +17,7 @@ import (
 )
 
 // Reconcile is the main reconciliation loop for the application.
-func (a *App) Reconcile(ctx context.Context) error {
+func (a *App) Reconcile(ctx context.Context) {
 	l := logging.LoggerWithComponent(a.base.Logger(), "reconcile")
 
 	tick := time.NewTicker(a.config.TickerInterval)
@@ -27,21 +27,22 @@ func (a *App) Reconcile(ctx context.Context) error {
 		select {
 		case <-tick.C:
 			if !a.base.IsLeader() {
-				l.Info("not leader, skipping reconciliation")
+				l.Debug("not leader, skipping reconciliation")
 				continue
 			}
 
-			l.Info("reconciling")
+			l.Debug("reconciling")
 
 			if err := reconcile(
 				ctx,
 				a.base.KubeClient(),
 			); err != nil {
 				l.Error("error reconciling", slog.String(logging.KeyError, err.Error()))
+				continue
 			}
 		case <-ctx.Done():
 			l.Info("reconciler closing")
-			return nil
+			return
 		}
 	}
 }
@@ -70,7 +71,7 @@ func reconcile(
 				Name:      "vector-logs-config",
 				Namespace: "vector",
 				Labels: map[string]string{
-					"owner": "vector-config-reconciler",
+					"owner": appName,
 				},
 			},
 			Data: map[string]string{
