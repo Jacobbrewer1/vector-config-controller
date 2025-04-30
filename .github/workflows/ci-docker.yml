@@ -50,11 +50,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Mount bazel cache
-        uses: actions/cache@v4
+      - name: Restore bazel cache
+        uses: actions/cache/restore@v4
         with:
-          path: "~/.cache/bazel"
           key: bazel-docker-build
+          path: |
+            ~/.cache/bazel
 
       - name: Build Mage command
         run: |
@@ -79,6 +80,10 @@ jobs:
         env:
           PUSH_IMAGES: ${{ github.event_name != 'pull_request' }}
 
-      - name: Clean Docker
-        if: ${{ always() }}
-        run: docker system prune -af
+      - name: Save bazel cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          key: bazel-docker-build
+          path: |
+            ~/.cache/bazel
