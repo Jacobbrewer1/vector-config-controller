@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "~/.cache/bazel"
-          key: bazel
+          key: bazel-code-approval
 
       - name: Build and Test
         uses: magefile/mage-action@v3
@@ -86,7 +86,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: "~/.cache/bazel"
-          key: bazel
+          key: bazel-code-approval-diff
 
       - name: Run Mage
         uses: magefile/mage-action@v3
