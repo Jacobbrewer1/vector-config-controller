@@ -1,4 +1,5 @@
 version: "2"
+
 linters:
   enable:
     - forcetypeassert
@@ -16,6 +17,7 @@ linters:
     - testifylint
     - thelper
     - tparallel
+
   settings:
     goconst:
       ignore-calls: true
@@ -93,6 +95,7 @@ linters:
       args-on-sep-lines: true
     testifylint:
       enable-all: true
+
   exclusions:
     generated: lax
     presets:
@@ -112,6 +115,8 @@ linters:
       - third_party$
       - builtin$
       - examples$
+      - magefiles/
+
 formatters:
   enable:
     - gofmt

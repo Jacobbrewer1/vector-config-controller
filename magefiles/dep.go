@@ -36,7 +36,7 @@ func (Dep) Install(dep string) error {
 		return fmt.Errorf("error installing dependency: %w", err)
 	}
 
-	return VendorDeps()
+	return nil
 }
 
 // VendorDeps manages vendoring of Golang dependencies.
