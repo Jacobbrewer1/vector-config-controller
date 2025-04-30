@@ -19,7 +19,7 @@ type (
 	// AppConfig is the configuration for the app.
 	AppConfig struct {
 		// TickerInterval is the interval for the ticker.
-		TickerInterval time.Duration `env:"TICKER_INTERVAL" default:"10s"`
+		TickerInterval time.Duration `env:"TICKER_INTERVAL" envDefault:"10s"`
 	}
 
 	// App is the main application struct.
