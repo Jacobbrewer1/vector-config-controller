@@ -57,17 +57,26 @@ jobs:
           go-version-file: 'go.mod'
           cache-dependency-path: "**/*.sum"
 
-      - name: Mount bazel cache
-        uses: actions/cache@v4
+      - name: Restore bazel cache
+        uses: actions/cache/restore@v4
         with:
-          path: "~/.cache/bazel"
           key: bazel-code-approval
+          path: |
+            ~/.cache/bazel
 
       - name: Build and Test
         uses: magefile/mage-action@v3
         with:
           version: latest
           args: -v build test
+
+      - name: Save bazel cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          key: bazel-code-approval
+          path: |
+            ~/.cache/bazel
 
   diff:
     name: "Diff"
@@ -82,11 +91,12 @@ jobs:
           go-version-file: 'go.mod'
           cache-dependency-path: "**/*.sum"
 
-      - name: Mount bazel cache
-        uses: actions/cache@v4
+      - name: Restore bazel cache
+        uses: actions/cache/restore@v4
         with:
-          path: "~/.cache/bazel"
           key: bazel-code-approval-diff
+          path: |
+            ~/.cache/bazel
 
       - name: Run Mage
         uses: magefile/mage-action@v3
@@ -103,3 +113,11 @@ jobs:
             echo "Make sure to run 'mage fixit' before committing."
             exit 1
           fi
+
+      - name: Save bazel cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          key: bazel-code-approval-diff
+          path: |
+            ~/.cache/bazel
