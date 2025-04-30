@@ -11,8 +11,6 @@ func Init() error {
 	}
 
 	mg.Deps(
-		mg.F(Dep.Install, "github.com/jacobbrewer1/goschema@latest"),
-		mg.F(Dep.Install, "golang.org/x/tools/cmd/goimports@latest"),
 		mg.F(Dep.Install, "github.com/bazelbuild/bazelisk@latest"),
 	)
 	return nil
