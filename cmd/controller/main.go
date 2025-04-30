@@ -72,12 +72,12 @@ func main() {
 	app, err := NewApp(l)
 	if err != nil {
 		l.Error("failed to create app", slog.String(logging.KeyError, err.Error()))
-		return
+		panic(err)
 	}
 
 	if err := app.Start(); err != nil {
 		l.Error("failed to start app", slog.String(logging.KeyError, err.Error()))
-		return
+		panic(err)
 	}
 
 	app.WaitForEnd()
