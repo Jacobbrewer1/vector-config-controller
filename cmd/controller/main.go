@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	appName = "controller"
+	appName = "vector-config-controller"
 )
 
 type (
@@ -50,7 +50,11 @@ func NewApp(l *slog.Logger) (*App, error) {
 }
 
 func (a *App) Start() error {
-	if err := a.base.Start(); err != nil {
+	if err := a.base.Start(
+		web.WithInClusterKubeClient(),
+		web.WithLeaderElection(appName),
+		web.WithIndefiniteAsyncTask("reconcile", a.Reconcile),
+	); err != nil {
 		return err
 	}
 	return nil
