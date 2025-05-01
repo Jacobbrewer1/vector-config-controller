@@ -139,8 +139,8 @@ github.com/jacobbrewer1/uhttp/common
 ## explicit; go 1.24
 github.com/jacobbrewer1/vaulty
 github.com/jacobbrewer1/vaulty/vsql
-# github.com/jacobbrewer1/web v0.0.6
-## explicit; go 1.24
+# github.com/jacobbrewer1/web v0.0.7-0.20250501091916-95fa8ff0534e
+## explicit; go 1.24.0
 github.com/jacobbrewer1/web
 github.com/jacobbrewer1/web/cache
 github.com/jacobbrewer1/web/health

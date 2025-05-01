@@ -2,8 +2,11 @@ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "k8s",
-    srcs = ["resource.go"],
-    importpath = "github.com/jacobbrewer1/vector-config-controller/pkg/k8s",
+    srcs = [
+        "pod.go",
+        "resource.go",
+    ],
+    importpath = "github.com/jacobbrewer1/web/k8s",
     visibility = ["//visibility:public"],
     deps = [
         "@io_k8s_api//core/v1:core",

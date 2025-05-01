@@ -12,9 +12,9 @@ go_library(
     importpath = "github.com/jacobbrewer1/vector-config-controller/cmd/controller",
     visibility = ["//visibility:private"],
     deps = [
-        "//pkg/k8s",
         "//pkg/vector",
         "@com_github_caarlos0_env_v10//:env",
+        "@com_github_jacobbrewer1_vector_config_controller//pkg/k8s:go_default_library",
         "@com_github_jacobbrewer1_web//:web",
         "@com_github_jacobbrewer1_web//logging",
         "@com_github_prometheus_client_golang//prometheus",
