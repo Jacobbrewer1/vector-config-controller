@@ -14,8 +14,8 @@ go_library(
     deps = [
         "//pkg/vector",
         "@com_github_caarlos0_env_v10//:env",
-        "@com_github_jacobbrewer1_vector_config_controller//pkg/k8s:go_default_library",
         "@com_github_jacobbrewer1_web//:web",
+        "@com_github_jacobbrewer1_web//k8s",
         "@com_github_jacobbrewer1_web//logging",
         "@com_github_prometheus_client_golang//prometheus",
         "@com_github_prometheus_client_golang//prometheus/promauto",
