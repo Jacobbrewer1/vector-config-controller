@@ -45,6 +45,10 @@ func VendorDeps() error {
 		return err
 	}
 
+	if err := sh.Run("go", "mod", "vendor"); err != nil {
+		return err
+	}
+
 	if err := sh.Run("go", "mod", "verify"); err != nil {
 		return err
 	}
