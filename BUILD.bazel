@@ -16,3 +16,8 @@ gazelle(
     name = "gazelle",
     gazelle = ":gazelle-gen",
 )
+
+write_source_files(
+    name = "gen_mock",
+    additional_update_targets = [],
+)
