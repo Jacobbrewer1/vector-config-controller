@@ -102,8 +102,8 @@ github.com/jacobbrewer1/uhttp v0.0.12 h1:815Gz4rH7SEwkWPw73XtPUTBAUeyiw19EoybHtX
 github.com/jacobbrewer1/uhttp v0.0.12/go.mod h1:VcQ3tWUZv+L1l+xNLkNKhIarKL0lqg8QQFU1zLYgSaQ=
 github.com/jacobbrewer1/vaulty v0.1.15-0.20250422083501-a48cb7ba777e h1:AeMRepuFFe7fKMK29/gdkQs02ZzHEJdhlRptfFP9hq0=
 github.com/jacobbrewer1/vaulty v0.1.15-0.20250422083501-a48cb7ba777e/go.mod h1:hncWoF2yQ+ZJKfoIy7JaGkju+k0hlU6GVBNq2y38e1k=
-github.com/jacobbrewer1/web v0.0.7-0.20250501091916-95fa8ff0534e h1:QhJxECHxapAjIPt2VFH3sfRIfQqZX+OlnwQTqH27TfU=
-github.com/jacobbrewer1/web v0.0.7-0.20250501091916-95fa8ff0534e/go.mod h1:lCe5358LzScq9mUBS0xwspxO/GTNgikTTB0NT80gk1A=
+github.com/jacobbrewer1/web v0.0.7-0.20250501184339-0d2f2fabe6e6 h1:aS+I3UxwG933xKerlhOk9ILeOhGlhbwzmb9zUG/CEfc=
+github.com/jacobbrewer1/web v0.0.7-0.20250501184339-0d2f2fabe6e6/go.mod h1:xnO/pSi7wAtsjsjnCndmGkj7i/uNgTz16QkE47NecyU=
 github.com/jacobbrewer1/workerpool v0.0.4 h1:jETZCLCXZzzMCRtL0kPae9NTOymbztd4bg4Ba7i1UU8=
 github.com/jacobbrewer1/workerpool v0.0.4/go.mod h1:m4t+CpY0s+Sv95Vq5OmtDYD+eXgQ0slVwJKnN3RkOkI=
 github.com/jmoiron/sqlx v1.4.0 h1:1PLqN7S1UYp5t4SrVVnt4nUVNemrDAtxlulVe+Qgm3o=
