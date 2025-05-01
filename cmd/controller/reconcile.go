@@ -11,8 +11,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/jacobbrewer1/vector-config-controller/pkg/k8s"
 	"github.com/jacobbrewer1/vector-config-controller/pkg/vector"
+	"github.com/jacobbrewer1/web/k8s"
 	"github.com/jacobbrewer1/web/logging"
 )
 

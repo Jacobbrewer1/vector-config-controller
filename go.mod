@@ -6,7 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/caarlos0/env/v10 v10.0.0
-	github.com/jacobbrewer1/web v0.0.6
+	github.com/jacobbrewer1/web v0.0.7-0.20250501184339-0d2f2fabe6e6
 	github.com/magefile/mage v1.15.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/stretchr/testify v1.10.0
