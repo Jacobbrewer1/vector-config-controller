@@ -20,6 +20,8 @@ func (Test) Unit() error {
 
 	args := []string{
 		"test",
+		"--@io_bazel_rules_go//go/config:race",
+		"--test_arg=\"--test.shuffle=on\"",
 	}
 
 	args = append(args, "//...")

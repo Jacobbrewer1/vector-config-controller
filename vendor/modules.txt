@@ -139,7 +139,7 @@ github.com/jacobbrewer1/uhttp/common
 ## explicit; go 1.24
 github.com/jacobbrewer1/vaulty
 github.com/jacobbrewer1/vaulty/vsql
-# github.com/jacobbrewer1/web v0.0.7-0.20250501184339-0d2f2fabe6e6
+# github.com/jacobbrewer1/web v0.0.7-0.20250502102420-95c900aba729
 ## explicit; go 1.24.0
 github.com/jacobbrewer1/web
 github.com/jacobbrewer1/web/cache
