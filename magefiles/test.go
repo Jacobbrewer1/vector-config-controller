@@ -23,7 +23,7 @@ func (Test) Unit() error {
 	}
 
 	if isCIRunner() {
-		args = appendBazelBuildArgs(args)
+		args = appendBazelArgs(args)
 	}
 	args = append(args, "--test_arg=--test.shuffle=on")
 

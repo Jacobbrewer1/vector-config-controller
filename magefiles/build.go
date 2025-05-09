@@ -25,7 +25,7 @@ func (b Build) All() error {
 	}
 
 	if isCIRunner() {
-		args = appendBazelBuildArgs(args)
+		args = appendBazelArgs(args)
 	}
 	args = append(args, "//...")
 
@@ -49,7 +49,7 @@ func (b Build) One(service string) error {
 	}
 
 	if isCIRunner() {
-		args = appendBazelBuildArgs(args)
+		args = appendBazelArgs(args)
 	}
 	args = append(args, "//cmd/"+service)
 
