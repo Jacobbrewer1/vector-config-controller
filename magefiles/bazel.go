@@ -27,3 +27,9 @@ var outputDirectory = sync.OnceValue(func() string {
 
 	return dir
 })
+
+// appendBazelBuildArgs appends additional Bazel build arguments to the provided slice of arguments.
+func appendBazelBuildArgs(args []string) []string {
+	args = append(args, "--@io_bazel_rules_go//go/config:race")
+	return args
+}

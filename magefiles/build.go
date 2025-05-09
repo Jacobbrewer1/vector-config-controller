@@ -22,8 +22,13 @@ func (b Build) All() error {
 
 	args := []string{
 		"build",
-		"//...",
 	}
+
+	if isCIRunner() {
+		args = appendBazelBuildArgs(args)
+	}
+
+	args = append(args, "//...")
 
 	if err := sh.Run("bazel", args...); err != nil {
 		return fmt.Errorf("error building all code: %w", err)
@@ -42,8 +47,13 @@ func (b Build) One(service string) error {
 
 	args := []string{
 		"build",
-		"//cmd/" + service,
 	}
+
+	if isCIRunner() {
+		args = appendBazelBuildArgs(args)
+	}
+
+	args = append(args, "//cmd/"+service)
 
 	if err := sh.Run("bazel", args...); err != nil {
 		return fmt.Errorf("error building %s: %w", service, err)
